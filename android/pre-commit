@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Ensures that the version name and version code in AndroidManifest.xml and
+# build.gradle are in sync.
+
+GRADLE_VERSION_NAME=`gradlew -q getVersion`
+GRADLE_VERSION_CODE=`gradlew -q getVersionCode`
+
+MANIFEST_VERSION_NAME=`grep "android:versionName" src/main/AndroidManifest.xml | \
+  awk -F'"' '{ print $2 }'`
+MANIFEST_VERSION_CODE=`grep "android:versionCode" src/main/AndroidManifest.xml | \
+  awk -F'"' '{ print $2 }'`
+
+if [ "$GRADLE_VERSION_NAME" != "$MANIFEST_VERSION_NAME" ] ; then
+  echo "Sync AndroidManifest.xml and build.gradle:"
+  echo "    Gradle version name: $GRADLE_VERSION_NAME"
+  echo "    Manifest version name: $MANIFEST_VERSION_NAME"
+  exit 1
+fi
+
+if [ "$GRADLE_VERSION_CODE" != "$MANIFEST_VERSION_CODE" ] ; then
+  echo "Sync AndroidManifest.xml and build.gradle:"
+  echo "    Gradle version code: $GRADLE_VERSION_CODE"
+  echo "    Manifest version code: $MANIFEST_VERSION_CODE"
+  exit 1
+fi
