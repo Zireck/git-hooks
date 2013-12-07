@@ -2,7 +2,7 @@
 
 # Returns 0 if none of the gradle tests fail.
 
-# Quietly perform tests. On fail, this will print all failed tests.
+# Quietly perform tests. On fail, this will print info about failed tests.
 ./gradlew -q check
 
 # If ./gradlew returned anything other than 0, the tests failed...
