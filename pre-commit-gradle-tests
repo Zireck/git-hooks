@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Returns 0 if none of the gradle tests fail.
+
+# Quietly perform tests. On fail, this will print all failed tests.
+./gradlew -q check
+
+# If ./gradlew returned anything other than 0, the tests failed...
+if [ $? -ne 0 ] ; then
+    echo "Aborting commit due to failed tests."
+    exit 1
+fi
