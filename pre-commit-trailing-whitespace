@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Returns 0 if none of the committed files ending in $filetype have trailing
+# whitespace.
+
+filetype="java"
+
+# Only look at files that have been added, modified, or renamed.
+bad_files=$(git diff --staged --name-only --diff-filter=AMR | \
+  grep "*\.$filetype$" | \
+  while read file; do
+    if egrep ".* +$" "$file" > /dev/null ; then
+        echo "{$file} has trailing whitespace"
+    fi
+  done
+)
+
+if [ -z "$bad_files" ] ; then
+  exit 0
+else
+  echo "$bad_files"
+  exit 1
+fi
